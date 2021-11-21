@@ -2,7 +2,7 @@
  * Copyright (c) 2021, 2030, lucas and his teacher kimmking. All rights reserved.
  */
 
-package com.geek.week1jvm;
+package com.geek.jvm;
 
 import java.io.InputStream;
 import java.io.IOException;
