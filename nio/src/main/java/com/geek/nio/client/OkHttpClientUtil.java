@@ -1,31 +1,24 @@
 package com.geek.nio.client;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
-import java.io.IOException;
+import com.geek.nio.filter.HeaderHttpRequestFilter;
+import com.geek.nio.outbound.HttpOutboundHandler;
+import io.netty.handler.codec.http.DefaultFullHttpRequest;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpVersion;
 
 public class OkHttpClientUtil {
 
-    private static OkHttpClient okHttpClient  = new OkHttpClient();
+    private static HeaderHttpRequestFilter headerHttpRequestFilter = new HeaderHttpRequestFilter();
 
     public static void main(String[] args) {
         try {
-            String resStr = run("http://localhost:8801");
+            FullHttpRequest fullHttpRequest = new DefaultFullHttpRequest(HttpVersion.HTTP_1_0, HttpMethod.GET, "http://localhost:8801");
+            String resStr = HttpOutboundHandler.handle(fullHttpRequest, headerHttpRequestFilter);
             System.out.println(resStr);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    static String run(String url) throws IOException {
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        try (Response response = okHttpClient.newCall(request).execute()) {
-            return response.body().string();
-        }
-    }
 }
